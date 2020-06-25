@@ -1,0 +1,12 @@
+﻿<Config>
+	<Image_Type>header</Image_Type>	
+	<Logo_File>header_docker.png</Logo_File>		
+	<Title>Docker Desktop Update</Title>
+	<Text>A new version of Docker Desktop for Windows is available.
+	
+This one will be automatically installed on your device.</Text>
+	<Media_Warning>
+! Please close Docker before clicking on the button !</Media_Warning>
+	<GUI_Title>New version of Docker</GUI_Title>	
+	<GUI_StatusBar>Provided by Syst and Deploy</GUI_StatusBar>
+</Config>
