@@ -63,8 +63,10 @@ Topmost="True"
 					<Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Width="420" Height="auto" >			
 						<StackPanel Orientation="Vertical"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,10,10">						
 							<StackPanel Orientation="Vertical"  Margin="0,0,0,0"  VerticalAlignment="Center">
-								<TextBlock  Name="Main_Message" FontSize="14"  TextWrapping="Wrap" HorizontalAlignment="Left"/>
-								<TextBlock  Name="Docker_Warning" FontSize="14"  TextWrapping="Wrap" HorizontalAlignment="Left"/>								
+								<TextBlock  Name="Message_Part1" FontSize="14"  TextWrapping="Wrap" HorizontalAlignment="Center"/>
+								<TextBlock  Name="Message_Part2" FontSize="14"  TextWrapping="Wrap" HorizontalAlignment="Center"/>								
+								<TextBlock  Name="Installed_Version" FontSize="14"  TextWrapping="Wrap" HorizontalAlignment="Center"/>	
+								<TextBlock  Name="Docker_Warning" FontSize="14"  TextWrapping="Wrap" HorizontalAlignment="Center"/>																								
 							</StackPanel>					
 						</StackPanel>	
 					</Border>	

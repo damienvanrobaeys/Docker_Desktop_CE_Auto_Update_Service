@@ -1,4 +1,11 @@
-﻿$Global:Current_Folder = split-path $MyInvocation.MyCommand.Path
+﻿Param(
+		[string]$Version_Installed,		
+		[string]$Version_Available			
+	 )	 
+	 
+$Version_Available = $Version_Available.split(" ")[-1]	 
+
+$Global:Current_Folder = split-path $MyInvocation.MyCommand.Path
 
 Function Show_WPF_Message
 {
@@ -21,7 +28,8 @@ Function Show_WPF_Message
 
 	$Logo_CM = $Form.findname("Logo_CM") 
 	$Label_Close = $Form.findname("Label_Close") 
-	$Main_Message = $Form.findname("Main_Message") 
+	$Message_Part1 = $Form.findname("Message_Part1") 
+	$Message_Part2 = $Form.findname("Message_Part2") 	
 	$Logo_Picture = $Form.findname("Logo_Picture") 
 	$Main_Title = $Form.findname("Main_Title") 
 	$Block_Header = $Form.findname("Block_Header") 
@@ -29,14 +37,16 @@ Function Show_WPF_Message
 	$Header_Image = $Form.findname("Header_Image") 
 	$Docker_Warning = $Form.findname("Docker_Warning") 
 	$Update_Docker = $Form.findname("Update_Docker") 
-	
+	$Installed_Version = $Form.findname("Installed_Version") 
+		
 	$XML_Config = "$Current_Folder\Warning_Config.xml"
 	[xml]$Get_Config = get-content $XML_Config
 	$Form.Title = $Get_Config.Config.GUI_Title
 	$Get_Logo_Picture = $Get_Config.Config.Logo_File
 	$Get_StatusBar_Text = $Get_Config.Config.GUI_StatusBar
 	
-	$Main_Message.Text = $Get_Config.Config.Text
+	$Message_Part1.Text = $Get_Config.Config.Text_Part1
+	$Message_Part2.Text = $Get_Config.Config.Text_Part2
 	$Main_Title.Content = $Get_Config.Config.Title
 	$Label_Close.Content = $Get_Config.Config.GUI_StatusBar	
 	$Logo_Type = $Get_Config.Config.Image_Type
@@ -44,6 +54,8 @@ Function Show_WPF_Message
 	$Docker_Warning.Text = $Get_Config.Config.Media_Warning
 	$Docker_Warning.FontWeight = "Bold"
 	$Docker_Warning.Foreground = "Red"
+		
+	$Installed_Version.Text = "Current version is: $Version_Installed - New version is: $Version_Available"
 	
 	$Update_Docker.Add_Click({
 		$Form.Close()
