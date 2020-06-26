@@ -11,6 +11,8 @@ $Update_Warning_Folder = "$Current_Folder\Update_Warning"
 $Service_Description = "Update Docker Desktop for Windows"
 $Docker_Update_ServiceName = "Docker Desktop Auto Update"
 $Auto_Update_Script = "$Current_Folder\Docker_Auto_Update_Script.ps1"
+$Remove_Auto_Update_Service = "$Current_Folder\Remove_Docker_Auto_Update_Service.ps1"
+$Auto_Update_Notifcations_Script = "$Current_Folder\Toast_Notifications.ps1"
 
 If(test-path $Log_File){Remove-item $Log_File -Recurse -Force}
 
@@ -50,13 +52,16 @@ If($Docker_Create_Folder_Status -eq $True)
 				copy-item $Auto_Update_Script $Docker_Auto_Update_Folder -Force						
 				copy-item $Path_NSSM $Docker_Auto_Update_Folder -Force			
 				copy-item $Service_UI $Docker_Auto_Update_Folder -Force
-				copy-item $Update_Warning_Folder $Docker_Auto_Update_Folder -Recurse -Force				
-				Write_Log -Message_Type "SUCCESS" -Message "ServiceUI.exe has been successfully copied in: $Docker_Auto_Update_Folder"		
+				copy-item $Update_Warning_Folder $Docker_Auto_Update_Folder -Recurse -Force		
+				copy-item $Remove_Auto_Update_Service $Docker_Auto_Update_Folder -Recurse -Force	
+				copy-item $Auto_Update_Notifcations_Script $Docker_Auto_Update_Folder -Recurse -Force		
+						
+				Write_Log -Message_Type "SUCCESS" -Message "Files have been successfully copied in: $Docker_Auto_Update_Folder"		
 				$ServiceUI_Copy_Status = $True				
 			}
 		Catch
 			{
-				Write_Log -Message_Type "ERROR" -Message "An issue occured while copying ServiceUI.exe in $Docker_Auto_Update_Folder"		
+				Write_Log -Message_Type "ERROR" -Message "An issue occured while copying files in $Docker_Auto_Update_Folder"		
 				$ServiceUI_Copy_Status = $False								
 			}
 	}

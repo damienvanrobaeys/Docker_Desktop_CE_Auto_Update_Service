@@ -54,9 +54,10 @@ Function Run_Docker_Update_Check
 					{
 						Try
 							{
+								$Docker_New_Version = $Docker_available_Version.Split(" ")[-1]
 								Write_Log -Message_Type "INFO" -Message "Waiting for user validation"									
-								& "$Current_Folder\ServiceUI.exe" -process:explorer.exe C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe " -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $Current_Folder\Update_Warning\Upgrade_Process.ps1"								
-								Write_Log -Message_Type "INFO" -Message "User ha validated the docker update"	
+								& "$Current_Folder\ServiceUI.exe" -process:explorer.exe C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe " -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $Current_Folder\Update_Warning\Upgrade_Process.ps1 -Version_Installed $Get_Current_Docker_Version -Version_Available $Docker_New_Version"								
+								Write_Log -Message_Type "INFO" -Message "User has validated the docker update"	
 								$Run_Update_Status = $True
 							}
 						Catch
@@ -71,19 +72,34 @@ Function Run_Docker_Update_Check
 								$New_Docker_Version_Path = "$Temp_Folder\Docker_Desktop_Installer.exe"
 								$Docker_Installer_Link = "https://download.docker.com/win/stable/Docker%20Desktop%20Installer.exe"
 								Write_Log -Message_Type "INFO" -Message "The new version will be downloaded"	
+								
+								$Title = 'Docker Desktop'
+								$Message = 'Downloading the new version of Docker Desktop'
+								$Title = $Title.Replace(" ","_")
+								$Message = $Message.Replace(" ","_")							
+								& "$Current_Folder\ServiceUI.exe" -process:explorer.exe C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe " -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $Current_Folder\Toast_Notifications.ps1 -Type Info -Title $Title -Message $Message"																									
 												
 								Try
-									{
-										
+									{							
 										$Download_EXE = new-object -typename system.net.webclient
 										$Download_EXE.Downloadfile($Docker_Installer_Link,$New_Docker_Version_Path)									
 										$New_Version_Download_Status = $True
-										Write_Log -Message_Type "SUCCESS" -Message "The new version of $Appli_name has been successfully downloaded"							
+										Write_Log -Message_Type "SUCCESS" -Message "The new version of $Appli_name has been successfully downloaded"
+										$Title = 'Docker Desktop download'
+										$Message = 'The new version of Docker Desktop for Windows has been successfully downloaded'
+										$Title = $Title.Replace(" ","_")
+										$Message = $Message.Replace(" ","_")										
+										& "$Current_Folder\ServiceUI.exe" -process:explorer.exe C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe " -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $Current_Folder\Toast_Notifications.ps1 -Type Info -Title $Title -Message $Message"																									
 									}
 								Catch
 									{
+										$Title = 'Docker Desktop download'
+										$Message = 'An error occured while downloading the new version of Docker Desktop'
+										$Title = $Title.Replace(" ","_")
+										$Message = $Message.Replace(" ","_")									
 										$New_Version_Download_Status = $False
-										Write_Log -Message_Type "ERROR" -Message "An issue occured while downloading the new version of $Appli_name"							
+										Write_Log -Message_Type "ERROR" -Message "An issue occured while downloading the new version of $Appli_name"
+										& "$Current_Folder\ServiceUI.exe" -process:explorer.exe C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe " -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $Current_Folder\Toast_Notifications.ps1 -Type Info -Title $Title -Message $Message"																																			
 									}							
 							}
 
@@ -96,15 +112,30 @@ Function Run_Docker_Update_Check
 				If(($New_Version_Download_Status -eq $True) -and ($Run_Update_Status -eq $True))
 					{
 						Write_Log -Message_Type "INFO" -Message "The new version will be installed"	
-						
+						$Title = 'Install Docker Desktop'
+						$Message = 'The new version will be installed'
+						$Title = $Title.Replace(" ","_")
+						$Message = $Message.Replace(" ","_")							
+						& "$Current_Folder\ServiceUI.exe" -process:explorer.exe C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe " -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $Current_Folder\Toast_Notifications.ps1 -Type Info -Title $Title -Message $Message"																									
+																					
 						Try 
 						{
-							start-process -FilePath $New_Docker_Version_Path -ArgumentList "install --quiet" -RedirectStandardOutput $Log_File_Full -Wait	
+							$Title = 'Docker Desktop Update'
+							$Message = 'The new version of Docker Desktop for Windows has been successfully installed'
+							$Title = $Title.Replace(" ","_")
+							$Message = $Message.Replace(" ","_")							
+							start-process -FilePath $New_Docker_Version_Path -ArgumentList "install --quiet" -RedirectStandardOutput $Log_File_Full -Wait								
+							& "$Current_Folder\ServiceUI.exe" -process:explorer.exe C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe " -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $Current_Folder\Toast_Notifications.ps1 -Type Info -Title $Title -Message $Message"															
 							Write_Log -Message_Type "SUCCESS" -Message "The new version of $Appli_name has been successfully installed"							
 						}
 						Catch 
 						{
-							Write_Log -Message_Type "ERROR" -Message "An issue occured while installing the new version of $Appli_name"													
+							$Title = 'Docker Desktop Update'
+							$Message = 'An error occured while updating Docker Desktop for Windows'
+							$Title = $Title.Replace(" ","_")
+							$Message = $Message.Replace(" ","_")							
+							Write_Log -Message_Type "ERROR" -Message "An issue occured while installing the new version of $Appli_name"		
+							& "$Current_Folder\ServiceUI.exe" -process:explorer.exe C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe " -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $Current_Folder\Toast_Notifications.ps1 -Type error -Title $Title -Message $Message"															
 						}		
 					}	
 			}
