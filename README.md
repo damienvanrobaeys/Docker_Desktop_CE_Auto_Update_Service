@@ -4,6 +4,7 @@ This allows you to create a Windows Service to Auto update Docker Desktop for Wi
 The Windows Service will be executed each 5 hours (you can change it)
 
 The service name is: **Docker Desktop Auto Update**
+
 To proceed run the file **Create_Docker_Auto_Update.ps1** with admin rights.
 
 See below what do all scripts:
